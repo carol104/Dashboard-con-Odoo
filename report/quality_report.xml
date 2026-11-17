@@ -49,10 +49,7 @@
                 </style>
                 <div class="page quality-report">
                     <h1>TechStore | <t t-if="graph_only">Gráfico de calidad</t><t t-else="">Análisis de calidad</t></h1>
-                    <p>Generado por <span t-esc="user.name"/> el
-                        <span t-esc="context_timestamp(generated_at).strftime('%d/%m/%Y %H:%M')"/>.
-                        <t t-if="not graph_only">Incluye todos los registros que coinciden con los filtros aplicados.</t>
-                    </p>
+                    
                     <table t-if="not graph_only" class="summary">
                         <tr>
                             <td>Registros<br/><strong t-esc="summary['count']"/></td>
@@ -64,7 +61,7 @@
                         </tr>
                     </table>
                     <t t-if="graph_image">
-                        <h2 t-if="not graph_only">Gráfico del análisis actual</h2>
+                        <h2 t-if="not graph_only">Gráfico</h2>
                         <div style="text-align: center;">
                             <img t-att-src="graph_image" t-att-style="'max-width: 100%; max-height: 530px;' if graph_only else 'max-width: 100%; max-height: 270px;'"/>
                         </div>
