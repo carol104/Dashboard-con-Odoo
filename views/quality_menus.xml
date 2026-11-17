@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_techstore_root" name="TechStore Calidad" sequence="50"
+              groups="practicaUnidad4.group_quality_reader"/>
+    <menuitem id="menu_quality_tests" name="Registro de pruebas" parent="menu_techstore_root"
+              action="action_quality_test" sequence="10"/>
+    <menuitem id="menu_quality_generate" name="Generar datos de prueba"
+              parent="menu_techstore_root" action="action_quality_generate_wizard"
+              sequence="15" groups="practicaUnidad4.group_quality_analyst"/>
+    <menuitem id="menu_quality_analysis" name="Análisis de calidad" parent="menu_techstore_root"
+              action="action_quality_analysis" sequence="20"/>
+    <menuitem id="menu_quality_api_settings" name="API para Power BI"
+              parent="menu_techstore_root" action="action_quality_api_token_wizard"
+              sequence="30" groups="practicaUnidad4.group_quality_manager"/>
+</odoo>

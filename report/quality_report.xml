@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="paperformat_quality_analysis" model="report.paperformat">
+        <field name="name">TechStore Calidad A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="action_report_quality_analysis" model="ir.actions.report">
+        <field name="name">Análisis de calidad</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">techstore.quality.analysis</field>
+        <field name="report_file">techstore.quality.analysis</field>
+        <field name="paperformat_id" ref="paperformat_quality_analysis"/>
+        <field name="binding_model_id" ref="model_techstore_quality_test"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(4, ref('group_quality_reader'))]"/>
+    </record>
+    <record id="action_report_quality_graph" model="ir.actions.report">
+        <field name="name">Gráfico de calidad</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">techstore.quality.analysis</field>
+        <field name="report_file">techstore.quality.analysis</field>
+        <field name="paperformat_id" ref="paperformat_quality_analysis"/>
+        <field name="groups_id" eval="[(4, ref('group_quality_reader'))]"/>
+    </record>
+    <template id="report_quality_analysis">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <style>
+                    .quality-report { font-size: 11px; color: #263247; }
+                    .quality-report h1 { color: #71639e; font-size: 25px; margin-bottom: 8px; }
+                    .quality-report h2 { color: #71639e; font-size: 17px; margin-top: 18px; }
+                    .quality-report table { width: 100%; border-collapse: collapse; }
+                    .quality-report th { background: #71639e; color: white; padding: 7px; }
+                    .quality-report td { padding: 6px; border-bottom: 1px solid #dfe3eb; }
+                    .quality-report thead { display: table-header-group; }
+                    .quality-report tr { page-break-inside: avoid; }
+                    .quality-report .number { text-align: right; white-space: nowrap; }
+                    .quality-report .summary td { background: #f2eff7; padding: 10px; text-align: center; }
+                    .quality-report .summary strong { font-size: 20px; color: #71639e; }
+                </style>
+                <div class="page quality-report">
+                    <h1>TechStore | <t t-if="graph_only">Gráfico de calidad</t><t t-else="">Análisis de calidad</t></h1>
+                    <p>Generado por <span t-esc="user.name"/> el
+                        <span t-esc="context_timestamp(generated_at).strftime('%d/%m/%Y %H:%M')"/>.
+                        <t t-if="not graph_only">Incluye todos los registros que coinciden con los filtros aplicados.</t>
+                    </p>
+                    <table t-if="not graph_only" class="summary">
+                        <tr>
+                            <td>Registros<br/><strong t-esc="summary['count']"/></td>
+                            <td>Ejecutadas<br/><strong t-esc="summary['executed']"/></td>
+                            <td>Exitosas<br/><strong t-esc="summary['successful']"/></td>
+                            <td>Fallidas<br/><strong t-esc="summary['failed']"/></td>
+                            <td>Errores<br/><strong t-esc="summary['errors']"/></td>
+                            <td>Éxito global<br/><strong><t t-esc="'%.2f' % summary['rate']"/>%</strong></td>
+                        </tr>
+                    </table>
+                    <t t-if="graph_image">
+                        <h2 t-if="not graph_only">Gráfico del análisis actual</h2>
+                        <div style="text-align: center;">
+                            <img t-att-src="graph_image" t-att-style="'max-width: 100%; max-height: 530px;' if graph_only else 'max-width: 100%; max-height: 270px;'"/>
+                        </div>
+                    </t>
+                    <h2 t-if="not graph_only">Resumen por módulo</h2>
+                    <table t-if="not graph_only">
+                        <thead><tr><th>Módulo</th><th class="number">Registros</th><th class="number">Ejecutadas</th><th class="number">Exitosas</th><th class="number">Fallidas</th><th class="number">Errores</th><th class="number">Éxito global</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="modules" t-as="module">
+                                <td t-esc="module['label']"/>
+                                <td class="number" t-esc="module['count']"/>
+                                <td class="number" t-esc="module['executed']"/>
+                                <td class="number" t-esc="module['successful']"/>
+                                <td class="number" t-esc="module['failed']"/>
+                                <td class="number" t-esc="module['errors']"/>
+                                <td class="number"><t t-esc="'%.2f' % module['rate']"/>%</td>
+                            </tr>
+                            <tr t-if="not modules"><td colspan="7">No hay pruebas para los filtros seleccionados.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div t-if="docs and not graph_only" class="page quality-report" style="page-break-before: always;">
+                    <h1>Detalle de las pruebas</h1>
+                    <table>
+                        <thead><tr><th>Código</th><th>Fecha</th><th>Módulo</th><th>Tipo de prueba</th><th class="number">Ejecutadas</th><th class="number">Exitosas</th><th class="number">Fallidas</th><th class="number">Errores</th><th class="number">Éxito</th><th>Estado</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="doc">
+                                <td><span t-field="doc.name"/></td><td style="white-space: nowrap;"><span t-field="doc.date"/></td>
+                                <td><span t-field="doc.module_name"/></td><td><span t-field="doc.test_type"/></td>
+                                <td class="number"><span t-field="doc.executed_tests"/></td><td class="number"><span t-field="doc.successful_tests"/></td>
+                                <td class="number"><span t-field="doc.failed_tests"/></td><td class="number"><span t-field="doc.errors_found"/></td>
+                                <td class="number"><t t-esc="'%.2f' % doc.success_rate"/>%</td><td><span t-field="doc.quality_status"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+    <!-- Report model names must be lowercase, even though the addon directory is not. -->
+    <record id="report_quality_analysis" model="ir.ui.view">
+        <field name="key">techstore.quality.analysis</field>
+    </record>
+</odoo>

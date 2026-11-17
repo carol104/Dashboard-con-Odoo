@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quality_api_token_wizard_form" model="ir.ui.view">
+        <field name="name">techstore.quality.api.token.wizard.form</field>
+        <field name="model">techstore.quality.api.token.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Configuración API Power BI" create="false" edit="false">
+                <group>
+                    <field name="warning" readonly="1" nolabel="1"/>
+                    <field name="token" readonly="1" password="0" placeholder="Pulse Generar token de acceso"/>
+                </group>
+                <footer>
+                    <button name="action_rotate_token" type="object" string="Generar / renovar token"
+                            class="btn-primary" groups="practicaUnidad4.group_quality_manager"/>
+                    <button special="cancel" string="Cerrar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_quality_api_token_wizard" model="ir.actions.act_window">
+        <field name="name">Configuración API Power BI</field>
+        <field name="res_model">techstore.quality.api.token.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'form_view_initial_mode': 'edit'}</field>
+    </record>
+</odoo>

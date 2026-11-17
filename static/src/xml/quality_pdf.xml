@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="practicaUnidad4.QualityPDF.Button" owl="1">
+        <button type="button" class="btn btn-primary ms-2 o_quality_download_pdf"
+                t-on-click="() => this.downloadQualityPDF(false)" t-att-disabled="pdfState.downloading"
+                title="Descargar el análisis con los filtros actuales">
+            <i class="fa fa-file-pdf-o me-1"/>
+            <t t-if="pdfState.downloading and !pdfState.graphOnly">Generando PDF…</t>
+            <t t-else="">Descargar completo</t>
+        </button>
+    </t>
+    <t t-name="practicaUnidad4.QualityPDF.graph" owl="1">
+        <t t-call="web.GraphView.Buttons"/>
+        <t t-call="practicaUnidad4.QualityPDF.Button"/>
+        <button type="button" class="btn btn-secondary ms-2 o_quality_download_graph_pdf"
+                t-on-click="() => this.downloadQualityPDF(true)" t-att-disabled="pdfState.downloading"
+                title="Descargar únicamente el gráfico visible en PDF">
+            <i class="fa fa-file-pdf-o me-1"/>
+            <t t-if="pdfState.downloading and pdfState.graphOnly">Generando PDF…</t>
+            <t t-else="">Descargar solo gráfico</t>
+        </button>
+    </t>
+    <t t-name="practicaUnidad4.QualityPDF.pivot" owl="1">
+        <t t-call="web.PivotView.Buttons"/>
+        <t t-call="practicaUnidad4.QualityPDF.Button"/>
+    </t>
+    <t t-name="practicaUnidad4.QualityPDF.list" owl="1">
+        <t t-call="web.ListView.Buttons"/>
+        <t t-call="practicaUnidad4.QualityPDF.Button"/>
+    </t>
+</templates>

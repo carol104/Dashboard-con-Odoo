@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_quality_test_tree" model="ir.ui.view">
+        <field name="name">techstore.quality.test.tree</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="arch" type="xml">
+            <tree string="Registro de pruebas" js_class="techstore_quality_pdf_list" decoration-danger="quality_status == 'critical'" decoration-success="quality_status == 'excellent'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="module_name"/>
+                <field name="test_type"/>
+                <field name="executed_tests" sum="Total"/>
+                <field name="successful_tests" sum="Total"/>
+                <field name="failed_tests" sum="Total"/>
+                <field name="errors_found" sum="Total"/>
+                <field name="success_rate" widget="percentage"/>
+                <field name="quality_status" widget="badge"
+                       decoration-danger="quality_status == 'critical'"
+                       decoration-warning="quality_status == 'acceptable'"
+                       decoration-info="quality_status == 'good'"
+                       decoration-success="quality_status == 'excellent'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_quality_test_form" model="ir.ui.view">
+        <field name="name">techstore.quality.test.form</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="arch" type="xml">
+            <form string="Prueba de calidad">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identificación de la prueba">
+                            <field name="date"/>
+                            <field name="module_name"/>
+                            <field name="test_type"/>
+                            <field name="responsible_id"/>
+                            <field name="version"/>
+                        </group>
+                        <group string="Resultados de ejecución">
+                            <field name="executed_tests"/>
+                            <field name="successful_tests"/>
+                            <field name="failed_tests" readonly="1"/>
+                            <field name="errors_found"/>
+                            <field name="success_rate" widget="percentage" readonly="1"/>
+                            <field name="quality_status" widget="badge" readonly="1"
+                                   decoration-danger="quality_status == 'critical'"
+                                   decoration-warning="quality_status == 'acceptable'"
+                                   decoration-info="quality_status == 'good'"
+                                   decoration-success="quality_status == 'excellent'"/>
+                        </group>
+                    </group>
+                    <group string="Indicadores adicionales">
+                        <group>
+                            <field name="response_time"/>
+                            <field name="availability"/>
+                        </group>
+                        <group>
+                            <field name="satisfaction"/>
+                            <field name="active" groups="practicaUnidad4.group_quality_manager"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Observaciones">
+                            <field name="notes" placeholder="Describa resultados e incidencias..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_quality_test_search" model="ir.ui.view">
+        <field name="name">techstore.quality.test.search</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="arch" type="xml">
+            <search string="Buscar pruebas">
+                <field name="name"/>
+                <field name="module_name"/>
+                <field name="test_type"/>
+                <field name="responsible_id"/>
+                <filter name="critical" string="Crítico" domain="[('quality_status','=','critical')]"/>
+                <filter name="acceptable" string="Aceptable" domain="[('quality_status','=','acceptable')]"/>
+                <filter name="good" string="Bueno" domain="[('quality_status','=','good')]"/>
+                <filter name="excellent" string="Excelente" domain="[('quality_status','=','excellent')]"/>
+                <separator/>
+                <filter name="group_module" string="Módulo" context="{'group_by':'module_name'}"/>
+                <filter name="group_type" string="Tipo de prueba" context="{'group_by':'test_type'}"/>
+                <filter name="group_status" string="Estado" context="{'group_by':'quality_status'}"/>
+                <filter name="group_date" string="Mes" context="{'group_by':'date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_quality_test_graph" model="ir.ui.view">
+        <field name="name">techstore.quality.test.graph</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="arch" type="xml">
+            <graph string="Errores por módulo" type="bar" js_class="techstore_quality_pdf_graph">
+                <field name="module_name"/>
+                <field name="errors_found" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_quality_test_pivot" model="ir.ui.view">
+        <field name="name">techstore.quality.test.pivot</field>
+        <field name="model">techstore.quality.test</field>
+        <field name="arch" type="xml">
+            <pivot string="Métricas por módulo" js_class="techstore_quality_pdf_pivot">
+                <field name="module_name" type="row"/>
+                <field name="test_type" type="col"/>
+                <field name="executed_tests" type="measure"/>
+                <field name="successful_tests" type="measure"/>
+                <field name="failed_tests" type="measure"/>
+                <field name="errors_found" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_quality_test" model="ir.actions.act_window">
+        <field name="name">Registro de pruebas</field>
+        <field name="res_model">techstore.quality.test</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_quality_test_search"/>
+    </record>
+
+    <record id="action_quality_analysis" model="ir.actions.act_window">
+        <field name="name">Análisis de calidad</field>
+        <field name="res_model">techstore.quality.test</field>
+        <field name="view_mode">graph,pivot,tree,form</field>
+        <field name="search_view_id" ref="view_quality_test_search"/>
+    </record>
+</odoo>

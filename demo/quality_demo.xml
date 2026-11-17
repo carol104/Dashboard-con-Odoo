@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="demo_quality_001" model="techstore.quality.test">
+        <field name="name">PRU-001</field><field name="date">2026-06-01</field>
+        <field name="module_name">maintenance</field><field name="test_type">integration</field>
+        <field name="executed_tests">30</field><field name="successful_tests">22</field>
+        <field name="errors_found">15</field><field name="response_time">1200</field>
+        <field name="availability">92.5</field><field name="satisfaction">3.2</field>
+        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="notes">Errores encontrados en la validación de procesos de mantenimiento.</field>
+    </record>
+    <record id="demo_quality_002" model="techstore.quality.test">
+        <field name="name">PRU-002</field><field name="date">2026-06-01</field>
+        <field name="module_name">customers</field><field name="test_type">functional</field>
+        <field name="executed_tests">25</field><field name="successful_tests">22</field>
+        <field name="errors_found">5</field><field name="response_time">800</field>
+        <field name="availability">95.5</field><field name="satisfaction">4.0</field>
+        <field name="responsible_id" ref="base.user_admin"/>
+    </record>
+    <record id="demo_quality_003" model="techstore.quality.test">
+        <field name="name">PRU-003</field><field name="date">2026-06-01</field>
+        <field name="module_name">technicians</field><field name="test_type">performance</field>
+        <field name="executed_tests">20</field><field name="successful_tests">18</field>
+        <field name="errors_found">4</field><field name="response_time">950</field>
+        <field name="availability">93.0</field><field name="satisfaction">3.8</field>
+        <field name="responsible_id" ref="base.user_admin"/>
+    </record>
+    <record id="demo_quality_004" model="techstore.quality.test">
+        <field name="name">PRU-004</field><field name="date">2026-06-01</field>
+        <field name="module_name">reports</field><field name="test_type">usability</field>
+        <field name="executed_tests">15</field><field name="successful_tests">13</field>
+        <field name="errors_found">3</field><field name="response_time">700</field>
+        <field name="availability">94.0</field><field name="satisfaction">3.6</field>
+        <field name="responsible_id" ref="base.user_admin"/>
+    </record>
+    <record id="demo_quality_005" model="techstore.quality.test">
+        <field name="name">PRU-005</field><field name="date">2026-06-01</field>
+        <field name="module_name">inventory</field><field name="test_type">security</field>
+        <field name="executed_tests">18</field><field name="successful_tests">17</field>
+        <field name="errors_found">2</field><field name="response_time">600</field>
+        <field name="availability">96.0</field><field name="satisfaction">4.2</field>
+        <field name="responsible_id" ref="base.user_admin"/>
+    </record>
+    <record id="demo_quality_006" model="techstore.quality.test">
+        <field name="name">PRU-006</field><field name="date">2026-06-01</field>
+        <field name="module_name">dashboard</field><field name="test_type">availability</field>
+        <field name="executed_tests">12</field><field name="successful_tests">11</field>
+        <field name="errors_found">2</field><field name="response_time">580</field>
+        <field name="availability">95.0</field><field name="satisfaction">4.1</field>
+        <field name="responsible_id" ref="base.user_admin"/>
+    </record>
+</odoo>
